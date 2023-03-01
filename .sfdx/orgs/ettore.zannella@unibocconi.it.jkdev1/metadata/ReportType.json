@@ -1,0 +1,18 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "createdById": "005680000031mpVAAQ",
+      "createdByName": "Platform Integration User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "reportTypes/screen_flows_prebuilt_crt.reportType",
+      "fullName": "screen_flows_prebuilt_crt",
+      "id": "070680000004WLyAAM",
+      "lastModifiedById": "005680000031mpVAAQ",
+      "lastModifiedByName": "Platform Integration User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "ReportType"
+    }
+  ]
+}

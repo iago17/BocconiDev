@@ -1,0 +1,31 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "pathAssistants/Default_Opportunity.pathAssistant",
+      "fullName": "Default_Opportunity",
+      "id": "1CP68000000GmqXGAS",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "PathAssistant"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "pathAssistants/Default.pathAssistant",
+      "fullName": "Default",
+      "id": "1CP68000000GmqWGAS",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "PathAssistant"
+    }
+  ]
+}

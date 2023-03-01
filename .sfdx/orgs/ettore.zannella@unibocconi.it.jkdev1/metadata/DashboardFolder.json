@@ -1,0 +1,31 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "dashboards/Service_Dashboards",
+      "fullName": "Service_Dashboards",
+      "id": "00l68000000hWzXAAU",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DashboardFolder"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "dashboards/Sales_and_Marketing_Dashboards",
+      "fullName": "Sales_and_Marketing_Dashboards",
+      "id": "00l68000000hWzcAAE",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DashboardFolder"
+    }
+  ]
+}

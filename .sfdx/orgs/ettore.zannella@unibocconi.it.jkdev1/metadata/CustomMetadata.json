@@ -1,0 +1,33 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "createdById": "00568000003asIYAAY",
+      "createdByName": "Ettore Zannella",
+      "createdDate": "1970-01-01T00:00:00.000Z",
+      "fileName": "customMetadata/hed__Product_Registry.EDAReleaseGate.md",
+      "fullName": "hed__Product_Registry.EDAReleaseGate",
+      "id": "m00680000004eKZAAY",
+      "lastModifiedById": "00568000003asIYAAY",
+      "lastModifiedByName": "Ettore Zannella",
+      "lastModifiedDate": "1970-01-01T00:00:00.000Z",
+      "manageableState": "installed",
+      "namespacePrefix": "hed",
+      "type": "CustomMetadata"
+    },
+    {
+      "createdById": "00568000003asIYAAY",
+      "createdByName": "Ettore Zannella",
+      "createdDate": "1970-01-01T00:00:00.000Z",
+      "fileName": "customMetadata/hed__Product_Registry.EDAProductInformation.md",
+      "fullName": "hed__Product_Registry.EDAProductInformation",
+      "id": "m00680000004eKYAAY",
+      "lastModifiedById": "00568000003asIYAAY",
+      "lastModifiedByName": "Ettore Zannella",
+      "lastModifiedDate": "1970-01-01T00:00:00.000Z",
+      "manageableState": "installed",
+      "namespacePrefix": "hed",
+      "type": "CustomMetadata"
+    }
+  ]
+}

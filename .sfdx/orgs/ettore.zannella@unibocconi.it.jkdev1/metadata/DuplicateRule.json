@@ -1,0 +1,70 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "duplicateRules/Contact.Standard_Contact_Duplicate_Rule.duplicateRule",
+      "fullName": "Contact.Standard_Contact_Duplicate_Rule",
+      "id": "0Bm68000000p25kCAA",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DuplicateRule"
+    },
+    {
+      "createdById": "005680000031mpVAAQ",
+      "createdByName": "Platform Integration User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "duplicateRules/Contact.Standard_Contact_to_Lead_Duplicate_Rule.duplicateRule",
+      "fullName": "Contact.Standard_Contact_to_Lead_Duplicate_Rule",
+      "id": "0Bm68000000p25nCAA",
+      "lastModifiedById": "005680000031mpVAAQ",
+      "lastModifiedByName": "Platform Integration User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DuplicateRule"
+    },
+    {
+      "createdById": "005680000031mpVAAQ",
+      "createdByName": "Platform Integration User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "duplicateRules/Lead.Standard_Lead_to_Contact_Duplicate_Rule.duplicateRule",
+      "fullName": "Lead.Standard_Lead_to_Contact_Duplicate_Rule",
+      "id": "0Bm68000000p25mCAA",
+      "lastModifiedById": "005680000031mpVAAQ",
+      "lastModifiedByName": "Platform Integration User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DuplicateRule"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "duplicateRules/Lead.Standard_Lead_Duplicate_Rule.duplicateRule",
+      "fullName": "Lead.Standard_Lead_Duplicate_Rule",
+      "id": "0Bm68000000p25jCAA",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DuplicateRule"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "duplicateRules/Account.Standard_Account_Duplicate_Rule.duplicateRule",
+      "fullName": "Account.Standard_Account_Duplicate_Rule",
+      "id": "0Bm68000000p25lCAA",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DuplicateRule"
+    }
+  ]
+}

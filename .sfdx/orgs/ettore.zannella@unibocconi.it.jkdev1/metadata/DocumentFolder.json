@@ -1,0 +1,45 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "documents/SharedDocuments",
+      "fullName": "SharedDocuments",
+      "id": "00l68000000hWzgAAE",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DocumentFolder"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "documents/SalesTools",
+      "fullName": "SalesTools",
+      "id": "00l68000000hWzhAAE",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "DocumentFolder"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "documents/SocialService__Social_Customer_Service",
+      "fullName": "SocialService__Social_Customer_Service",
+      "id": "00l68000000hWzxAAE",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "installed",
+      "namespacePrefix": "SocialService",
+      "type": "DocumentFolder"
+    }
+  ]
+}

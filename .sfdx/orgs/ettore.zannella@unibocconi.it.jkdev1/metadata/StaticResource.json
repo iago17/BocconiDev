@@ -1,0 +1,71 @@
+{
+  "status": 0,
+  "result": [
+    {
+      "createdById": "00568000003asIYAAY",
+      "createdByName": "Ettore Zannella",
+      "createdDate": "2023-02-28T16:36:10.000Z",
+      "fileName": "staticresources/ExcelReaderPlugin.resource",
+      "fullName": "ExcelReaderPlugin",
+      "id": "0815r000000hLFhAAM",
+      "lastModifiedById": "00568000003asIYAAY",
+      "lastModifiedByName": "Ettore Zannella",
+      "lastModifiedDate": "2023-02-28T16:36:10.000Z",
+      "manageableState": "unmanaged",
+      "type": "StaticResource"
+    },
+    {
+      "createdById": "00568000003asIYAAY",
+      "createdByName": "Ettore Zannella",
+      "createdDate": "2023-02-28T15:03:41.000Z",
+      "fileName": "staticresources/xlsx.resource",
+      "fullName": "xlsx",
+      "id": "0815r000000hL2TAAU",
+      "lastModifiedById": "00568000003asIYAAY",
+      "lastModifiedByName": "Ettore Zannella",
+      "lastModifiedDate": "2023-02-28T15:03:41.000Z",
+      "manageableState": "unmanaged",
+      "type": "StaticResource"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "staticresources/mobileLanding__mobileLandingImage.resource",
+      "fullName": "mobileLanding__mobileLandingImage",
+      "id": "08168000000pGOYAA2",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "installed",
+      "namespacePrefix": "mobileLanding",
+      "type": "StaticResource"
+    },
+    {
+      "createdById": "00568000003asIYAAY",
+      "createdByName": "Ettore Zannella",
+      "createdDate": "2023-02-28T10:59:09.000Z",
+      "fileName": "staticresources/sheetjs.resource",
+      "fullName": "sheetjs",
+      "id": "0815r000000hKqSAAU",
+      "lastModifiedById": "00568000003asIYAAY",
+      "lastModifiedByName": "Ettore Zannella",
+      "lastModifiedDate": "2023-02-28T10:59:09.000Z",
+      "manageableState": "unmanaged",
+      "type": "StaticResource"
+    },
+    {
+      "createdById": "005680000031mpUAAQ",
+      "createdByName": "Admin User",
+      "createdDate": "2022-11-25T12:47:17.000Z",
+      "fileName": "staticresources/mobileLandingImage.resource",
+      "fullName": "mobileLandingImage",
+      "id": "08168000000pGOXAA2",
+      "lastModifiedById": "005680000031mpUAAQ",
+      "lastModifiedByName": "Admin User",
+      "lastModifiedDate": "2022-11-25T12:47:17.000Z",
+      "manageableState": "unmanaged",
+      "type": "StaticResource"
+    }
+  ]
+}

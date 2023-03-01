@@ -1,0 +1,11 @@
+<template>
+	<template for:each={progressIndicators} for:item="progressIndicator">
+		<lightning-card key={progressIndicator.key} title={progressIndicator.label} icon-name="standard:sales_path">
+			<lightning-progress-indicator current-step={progressIndicator.currentValue} type="path" variant="base">
+				<template for:each={progressIndicator.steps} for:item="step">
+					<lightning-progress-step key={step.value} label={step.label} value={step.value} onclick={pathHandler} data-fieldname={progressIndicator.key}></lightning-progress-step>
+				</template>
+			</lightning-progress-indicator>
+		</lightning-card>
+	</template>
+</template>

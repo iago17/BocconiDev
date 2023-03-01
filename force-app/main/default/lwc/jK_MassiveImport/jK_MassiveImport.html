@@ -1,0 +1,29 @@
+<template>
+    <!--<lightning-card  variant="Narrow"  title="Uploader" icon-name="action:clone">
+        <lightning-file-upload
+        name="fileUploader"
+        accept={acceptedFormats}
+            record-id={myRecordId}
+            onuploadfinished={handleUploadFinished}
+            multiple>
+        </lightning-file-upload>
+    </lightning-card>
+
+    <lightning-card title="Carica file Excel" icon-name="standard:file">
+        <div class="slds-m-around_medium">
+            <lightning-input type="file" accept=".xlsx, .xls" label="Carica file" onchange={handleUpload}></lightning-input>
+            <template if:true={data}>
+                <lightning-datatable data={data} columns={columns} key-field="id"></lightning-datatable>
+            </template>
+        </div>
+    </lightning-card>-->
+
+    <lightning-layout-item size='12' small-device-size='12' large-device-size='3' medium-device-size='4' padding='around-small'>
+
+        <lightning-input type='file' label='Upload XLSX' name='fileUploader' accept={strAcceptedFormats} onchange={handleUploadFinished}></lightning-input>
+
+        <p>{strUploadFileName}</p>
+
+    </lightning-layout-item>
+
+</template>
