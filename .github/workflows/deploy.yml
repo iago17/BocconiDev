@@ -53,6 +53,7 @@ jobs:
       - name: SETUP DEV (${{ inputs.org }})
         if: inputs.org == 'DEV'
         run: | 
+          openssl enc -nosalt -aes-256-cbc -d -in ./keys/server.key.enc -out ./keys/server.key -base64 -K $DECRYPTION_KEY -iv $DECRYPTION_IV
           sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl $SFDC_DEV_URL
       # running Validate or deploy based on user option (else statement not available)
       - name: Running VALIDATE (${{ inputs.deployType }} == 'validate')
