@@ -53,7 +53,7 @@ jobs:
       - name: SETUP DEV (${{ inputs.org }})
         if: inputs.org == 'DEV'
         run: | 
-          echo ${{ secrets.AUTH_DEV_PROD}} > ./AUTH_URL.txt
+          echo ${{ secrets.AUTH_URL_DEV}} > ./AUTH_URL.txt
           sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
         # sfdx force:auth:web:login -a OrgAlias -r https://test.salesforce.com
         # sfdx force:org:display -u BocconiDev --verbose
