@@ -48,7 +48,7 @@ jobs:
       - name: SETUP PROD (${{ inputs.org }})
         if: inputs.org == 'PROD'
         run: | 
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PROD --username $SFDC_PROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl $SFDC_PROD_URL
+          sfdx force:auth:jwt:grant --clientid 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --username release.manager@bocconi.com --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://login.salesforce.com
         #echo ${{ secrets.AUTH_URL_PROD}} > ./AUTH_URL.txt
         #sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
       - name: SETUP DEV (${{ inputs.org }})
