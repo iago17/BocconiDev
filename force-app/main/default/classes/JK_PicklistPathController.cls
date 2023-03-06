@@ -46,7 +46,6 @@ public with sharing class JK_PicklistPathController
                 // Aggiunto i valori possibili della picklist in una lista per il path
                 for(Schema.PicklistEntry picklistValue : picklistValues)
                 {
-                    System.debug('pick: ' + picklistValue);
                     System.debug('Picklist Value: ' + picklistValue.getLabel());
                     picklistFieldList.add(picklistValue.getLabel());
                 }   
