@@ -48,8 +48,9 @@ jobs:
       - name: SETUP PROD (${{ inputs.org }})
         if: inputs.org == 'PROD'
         run: | 
-          echo ${{ secrets.AUTH_URL_PROD}} > ./AUTH_URL.txt
-          sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
+          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PROD --username $SFDC_PROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl $SFDC_PROD_URL
+        #echo ${{ secrets.AUTH_URL_PROD}} > ./AUTH_URL.txt
+        #sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
       - name: SETUP DEV (${{ inputs.org }})
         if: inputs.org == 'DEV'
         run: | 
