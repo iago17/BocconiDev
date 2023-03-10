@@ -54,7 +54,7 @@ jobs:
       - name: SETUP DEV (${{ inputs.org }})
         if: inputs.org == 'DEV'
         run: | 
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl $SFDC_DEV_URL
+          sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.com.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
         #echo ${{ secrets.AUTH_URL_DEV}} > ./AUTH_URL.txt
         #sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
         # sfdx force:auth:web:login -a OrgAlias -r https://test.salesforce.com
