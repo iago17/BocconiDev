@@ -22,6 +22,8 @@ on:
         type: choice
         options:
         - DEV
+        - TECHMERGE
+        - PREPROD
         - PROD
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -45,17 +47,25 @@ jobs:
 
       # The URL is stored in the Github Secret named AUTH_URL
       # so here we store the URL into a text file
-      - name: SETUP PROD (${{ inputs.org }})
-        if: inputs.org == 'PROD'
-        run: | 
-          sfdx force:auth:jwt:grant --clientid 3MVG9w8uXui2aB_ryu1Xo7JYO5XCR96O_gORwZgOQkHJfLfGLgnzkH1gHyfuHwiO9FxLFbgCL4UHI4Qn31fwS --username release.manager@bocconi.it.jkpreprod --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-        #echo ${{ secrets.AUTH_URL_PROD}} > ./AUTH_URL.txt
-        #sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
       - name: SETUP DEV (${{ inputs.org }})
         if: inputs.org == 'DEV'
         run: | 
-          sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.it.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-        #echo ${{ secrets.AUTH_URL_DEV}} > ./AUTH_URL.txt
+          sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.com.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+      - name: SETUP TECHMERGE (${{ inputs.org }})
+        if: inputs.org == 'TECHMERGE'
+        run: | 
+          sfdx force:auth:jwt:grant --clientid 3MVG9w8uXui2aB_ryu1Xo7JYO5TNPHYIK69cnt9r4moIduw6aiOfIbjMR.pi7Sh5QnWmF9xp46qLOKoCRD8Hp --username release.manager@bocconi.it.jktmerge --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+      - name: SETUP PREPROD (${{ inputs.org }})
+        if: inputs.org == 'PREPROD'
+        run: | 
+          sfdx force:auth:jwt:grant --clientid 3MVG9w8uXui2aB_ryu1Xo7JYO5XCR96O_gORwZgOQkHJfLfGLgnzkH1gHyfuHwiO9FxLFbgCL4UHI4Qn31fwS --username release.manager@bocconi.it.jkpreprod --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+      - name: SETUP PROD (${{ inputs.org }})
+        if: inputs.org == 'PROD'
+        run: | 
+          sfdx force:auth:jwt:grant --clientid 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --username release.manager@bocconi.it --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
+        #echo ${{ secrets.AUTH_URL_PROD}} > ./AUTH_URL.txt
+        #sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
+      #echo ${{ secrets.AUTH_URL_DEV}} > ./AUTH_URL.txt
         #sfdx auth:sfdxurl:store -f ./AUTH_URL.txt -s -a ${{ inputs.org }}
         # sfdx force:auth:web:login -a OrgAlias -r https://test.salesforce.com
         # sfdx force:org:display -u BocconiDev --verbose
