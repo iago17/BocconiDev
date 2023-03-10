@@ -72,7 +72,8 @@ jobs:
     # running Validate or deploy based on user option (else statement not available)
       - name: Running VALIDATE (${{ inputs.deployType }} == 'validate')
         if: inputs.deployType == 'validate'
-        run: 'sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -c -u ${{ inputs.org }} -w 10'
+        #run: 'sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -c -u ${{ inputs.org }} -w 10'
+        run: 'sfdx force:source:deploy -u ettore.zannella@unibocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml'
 
       - name: Running DEPLOY (${{ inputs.deployType }} == 'deploy')
         if: inputs.deployType == 'deploy'
