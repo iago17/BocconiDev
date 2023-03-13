@@ -25,6 +25,12 @@ jobs:
       - name: SETUP DEV
         if: github.ref == 'refs/heads/dev1'
         run: |
+          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+          sfdx force:source:deploy -u $SFDC_DEV_USER --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
+      
+      - name: SETUP TECHMERGE
+        if: github.ref == 'refs/heads/tech-merge'
+        run: |
           sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.com.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
           sfdx force:source:deploy -u release.manager@bocconi.com.jkdev1 --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
       
