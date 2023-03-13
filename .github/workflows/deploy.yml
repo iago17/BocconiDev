@@ -15,6 +15,7 @@ jobs:
 
     - name: Install CLI
       run: npm install sfdx-cli --global
+       echo ${{ github.ref }}
 
     - name: SETUP DEV
       if: github.ref == 'refs/heads/dev1'
