@@ -31,10 +31,19 @@ jobs:
       - name: SETUP TECHMERGE
         if: github.ref == 'refs/heads/tech-merge'
         run: |
-          sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.com.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-          sfdx force:source:deploy -u release.manager@bocconi.com.jkdev1 --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
+          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_TMERGE}} --username ${{ secrets.SFDC_TMERGE_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+          sfdx force:source:deploy -u ${{ secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml      
       
       - name: SETUP PREPROD
         if: github.ref == 'refs/head/preprod'
         run: |
-          sfdx force:auth:jwt:grant --clientid 3MVG9w8uXui2aB_ryu1Xo7JYO5XCR96O_gORwZgOQkHJfLfGLgnzkH1gHyfuHwiO9FxLFbgCL4UHI4Qn31fwS --username release.manager@bocconi.it.jkpreprod --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_PREPROD}} --username ${{ secrets.SFDC_PREPROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+          sfdx force:source:deploy -u ${{ secrets.SFDC_PREPROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml      
+          
+      - name: SETUP PROD
+        if: github.ref == 'refs/head/main'
+        run: |
+          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_PROD}} --username ${{ secrets.SFDC_PROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+          sfdx force:source:deploy -u ${{ secrets.SFDC_PROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml      
+      
+      
