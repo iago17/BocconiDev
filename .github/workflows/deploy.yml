@@ -1,86 +1,24 @@
-name: Pull Request Trigger
-
 on:
   pull_request:
     types: [closed]
 
 jobs:
-  validate_and_deploy:
-    runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'dev1' || github.event.pull_request.head.ref == 'techmerge' || github.event.pull_request.head.ref == 'preprod' || (github.event.pull_request.head.ref == 'prod' && github.event.pull_request.merged == true)
+ build:
+  runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-
-      - uses: actions/setup-node@v1
-        with:
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
           node-version: '>=14'
           check-latest: true
 
-      - name: Install CLI
-        run: npm install sfdx-cli --global
+    - name: Install CLI
+      run: npm install sfdx-cli --global
 
-      - name: SETUP DEV
-        if: github.event.pull_request.head.ref == 'DEV'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: SETUP TECHMERGE
-        if: github.event.pull_request.head.ref == 'TECHMERGE'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_TMERGE --username $SFDC_TMERGE_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: SETUP PREPROD
-        if: github.event.pull_request.head.ref == 'PREPROD'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PREPROD --username $SFDC_PREPROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: SETUP PROD
-        if: github.event.pull_request.head.ref == 'PROD'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PROD --username $SFDC_PROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
-
-      - name: Running VALIDATE (${{ github.event.inputs.deployType }} == 'validate')
-        if: github.event.inputs.deployType == 'validate'
-        run: |
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod -x ./manifest/FirstTestDeploy.xml -u ${{ github.event.inputs.org }} -w 10
-
-      - name: Running DEPLOY (${{ github.event.inputs.deployType }} == 'deploy')
-        if: github.event.inputs.deployType == 'deploy'
-
-name: trigger-validate-&-deploy
-
-on:
-  pull_request:
-    types: [closed]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '>=14'
-          check-latest: true
-
-      - name: Install Salesforce CLI
-        run: npm install sfdx-cli --global
-
-      - name: Authenticate to Salesforce Org
-        run: sfdx auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --username ${{ secrets.SFDC_USERNAME }} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: Validate and Deploy Code
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        env:
-          ORG: ${{ env.ORG }}
-        run: |
-          if [ "${{ env.ORG }}" == "prod" ]; then
-            sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
-          else
-            sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -c -u ${{ env.ORG }} -w 10
-          fi
+    - name: SETUP DEV
+      if: github.ref == 'refs/heads/dev1'
+      run: |
+          sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.com.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+          sfdx force:source:deploy -u release.manager@bocconi.com.jkdev1 --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
+      
