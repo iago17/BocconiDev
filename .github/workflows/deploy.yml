@@ -32,4 +32,3 @@ jobs:
         if: github.ref == 'refs/head/preprod'
         run: |
           sfdx force:auth:jwt:grant --clientid 3MVG9w8uXui2aB_ryu1Xo7JYO5XCR96O_gORwZgOQkHJfLfGLgnzkH1gHyfuHwiO9FxLFbgCL4UHI4Qn31fwS --username release.manager@bocconi.it.jkpreprod --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
