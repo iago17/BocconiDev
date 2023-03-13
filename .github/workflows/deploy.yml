@@ -1,17 +1,36 @@
-name: Pull Request Trigger
+name: trigger-validate-deploy
 
 on:
   pull_request:
     types: [closed]
+  workflow_dispatch:
+    inputs:
+      deployType:
+        description: 'Deploy Type'
+        required: true
+        default: 'validate'
+        type: choice
+        options:
+          - validate
+          - deploy
+      org:
+        description: 'Target Org'
+        required: true
+        default: 'DEV'
+        type: choice
+        options:
+          - DEV
+          - TECHMERGE
+          - PREPROD
+          - PROD
 
 jobs:
-  validate_and_deploy:
+  build:
     runs-on: ubuntu-latest
     if: github.event.pull_request.head.ref == 'dev1' || github.event.pull_request.head.ref == 'techmerge' || github.event.pull_request.head.ref == 'preprod' || (github.event.pull_request.head.ref == 'prod' && github.event.pull_request.merged == true)
 
     steps:
       - uses: actions/checkout@v2
-
       - uses: actions/setup-node@v1
         with:
           node-version: '>=14'
@@ -20,67 +39,31 @@ jobs:
       - name: Install CLI
         run: npm install sfdx-cli --global
 
-      - name: SETUP DEV
-        if: github.event.pull_request.head.ref == 'DEV'
+      - name: SETUP DEV (${{ inputs.org }})
+        if: inputs.org == 'DEV'
         run: |
           sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: SETUP TECHMERGE
-        if: github.event.pull_request.head.ref == 'TECHMERGE'
+      - name: SETUP TECHMERGE (${{ inputs.org }})
+        if: inputs.org == 'TECHMERGE'
         run: |
           sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_TMERGE --username $SFDC_TMERGE_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: SETUP PREPROD
-        if: github.event.pull_request.head.ref == 'PREPROD'
+      - name: SETUP PREPROD (${{ inputs.org }})
+        if: inputs.org == 'PREPROD'
         run: |
           sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PREPROD --username $SFDC_PREPROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: SETUP PROD
-        if: github.event.pull_request.head.ref == 'PROD'
+      - name: SETUP PROD (${{ inputs.org }})
+        if: inputs.org == 'PROD'
         run: |
           sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PROD --username $SFDC_PROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
 
-      - name: Running VALIDATE (${{ github.event.inputs.deployType }} == 'validate')
-        if: github.event.inputs.deployType == 'validate'
+      - name: Running VALIDATE (${{ inputs.deployType }} == 'validate')
+        if: inputs.deployType == 'validate'
         run: |
           sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod -x ./manifest/FirstTestDeploy.xml -u ${{ github.event.inputs.org }} -w 10
+          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod -x ./manifest/FirstTestDeploy.xml -u ${{ inputs.org }} -w 10
 
-      - name: Running DEPLOY (${{ github.event.inputs.deployType }} == 'deploy')
-        if: github.event.inputs.deployType == 'deploy'
-
-name: trigger-validate-&-deploy
-
-on:
-  pull_request:
-    types: [closed]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '>=14'
-          check-latest: true
-
-      - name: Install Salesforce CLI
-        run: npm install sfdx-cli --global
-
-      - name: Authenticate to Salesforce Org
-        run: sfdx auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY }} --username ${{ secrets.SFDC_USERNAME }} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: Validate and Deploy Code
-        if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
-        env:
-          ORG: ${{ env.ORG }}
+      - name: Running DEPLOY (${{ inputs.deployType }} == 'deploy')
+        if: inputs.deployType == 'deploy'
         run: |
-          if [ "${{ env.ORG }}" == "prod" ]; then
-            sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
-          else
-            sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -c -u ${{ env.ORG }} -w 10
-          fi
+          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
+          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod -x ./manifest/FirstTestDeploy.xml -u ${{ inputs.org }} -w 10
