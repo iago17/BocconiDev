@@ -27,19 +27,22 @@ jobs:
         run: |
           sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_DEV}} --username ${{ secrets.SFDC_DEV_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
           sfdx force:source:deploy -u ${{ secrets.SFDC_DEV_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml      
-      
+          sfdx force:source:deploy -u ${{ secrets.SFDC_DEV_USER}} -x ./manifest/FirstTestDeploy.xml -u ${{ inputs.org }} -w 10'
+
       - name: SETUP TECHMERGE
         if: github.ref == 'refs/heads/tech-merge'
         run: |
           sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_TMERGE}} --username ${{ secrets.SFDC_TMERGE_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
           sfdx force:source:deploy -u ${{ secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml      
-      
+          sfdx force:source:deploy -u ${{ secrets.SFDC_TMERGE_USER}} -x ./manifest/FirstTestDeploy.xml -u ${{ inputs.org }} -w 10'
+
       - name: SETUP PREPROD
         if: github.ref == 'refs/head/preprod'
         run: |
           sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_PREPROD}} --username ${{ secrets.SFDC_PREPROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
           sfdx force:source:deploy -u ${{ secrets.SFDC_PREPROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml      
-          
+          sfdx force:source:deploy -u ${{ secrets.SFDC_PREPROD_USER}} -x ./manifest/FirstTestDeploy.xml -u ${{ inputs.org }} -w 10'
+
       - name: SETUP PROD
         if: github.ref == 'refs/head/main'
         run: |
