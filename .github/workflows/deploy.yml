@@ -1,4 +1,4 @@
-name: trigger-validate-deploy
+name: Validate and Deploy
 
 on:
   push:
