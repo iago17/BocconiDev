@@ -1,4 +1,4 @@
-name: Validate and Deploy
+name: trigger-validate-deploy
 
 on:
   push:
@@ -6,25 +6,40 @@ on:
       - dev1
       - techmerge
       - preprod
-  pull_request:
-    branches:
-      - dev1
-      - techmerge
-      - preprod
       - prod
 
 jobs:
-  validate-and-deploy:
+  build:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        org: [my-dev-org, my-prod-org]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-      - name: Validate code
-        run: sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -c -u ${{ matrix.org }} -w 10 --checkonly
-        if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/prod' }}
-      - name: Deploy code
-        run: sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -u ${{ matrix.org }} -w 10
-        if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/prod' }}
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '>=14'
+          check-latest: true
+
+      - name: Install CLI
+        run: npm install sfdx-cli --global
+
+      - name: SETUP DEV
+        if: github.ref == 'refs/heads/dev1'
+        run: |
+          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+      - name: SETUP TECHMERGE
+        if: github.ref == 'refs/heads/techmerge'
+        run: |
+          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_TMERGE --username $SFDC_TMERGE_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+      - name: SETUP PREPROD
+        if: github.ref == 'refs/heads/preprod'
+        run: |
+          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PREPROD --username $SFDC_PREPROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+      - name: SETUP PROD
+        if: github.ref == 'refs/heads/prod'
+        run: |
+          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PROD --username $SFDC_PROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
+
+      - name: Running VALIDATE
+        if: github.ref == 'refs/heads/prod'
+        run: |
+          sfdx force:source:deploy -u release.manager@bocconi.it.jkprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
