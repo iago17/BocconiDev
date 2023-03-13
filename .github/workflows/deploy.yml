@@ -26,20 +26,7 @@ jobs:
         if: github.ref == 'refs/heads/dev1'
         run: |
           sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-      - name: SETUP TECHMERGE
-        if: github.ref == 'refs/heads/techmerge'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_TMERGE --username $SFDC_TMERGE_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-      - name: SETUP PREPROD
-        if: github.ref == 'refs/heads/preprod'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PREPROD --username $SFDC_PREPROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-      - name: SETUP PROD
-        if: github.ref == 'refs/heads/prod'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PROD --username $SFDC_PROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
-
       - name: Running VALIDATE
         if: github.ref == 'refs/heads/prod'
         run: |
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
+          sfdx force:source:deploy -u release.manager@bocconi.it.jkdev1 --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
