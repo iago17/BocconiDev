@@ -25,7 +25,7 @@ jobs:
       - name: SETUP DEV
         if: github.ref == 'refs/heads/dev1'
         run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_DEV}} --username ${{ secrets.SFDC_DEV_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
           sfdx force:source:deploy -u $SFDC_DEV_USER --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
       
       - name: SETUP TECHMERGE
