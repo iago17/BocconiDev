@@ -1,30 +1,24 @@
-name: trigger-validate-deploy
-
 on:
-  push:
-    branches:
-      - dev1
-      - techmerge
-      - preprod
-      - prod
+  pull_request:
+    types: [closed]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+ build:
+  runs-on: ubuntu-latest
 
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
+  steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
           node-version: '>=14'
           check-latest: true
 
-      - name: Install CLI
-        run: npm install sfdx-cli --global
+    - name: Install CLI
+      run: npm install sfdx-cli --global
 
-      - name: SETUP DEV
-        if: github.ref == 'refs/heads/dev1'
-        run: |
+    - name: SETUP DEV
+      if: github.ref == 'refs/heads/dev1'
+      run: |
           sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.com.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
           sfdx force:source:deploy -u release.manager@bocconi.com.jkdev1 --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
       
