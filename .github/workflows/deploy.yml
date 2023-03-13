@@ -23,3 +23,9 @@ jobs:
         run: |
           sfdx force:auth:jwt:grant --clientid 3MVG97srI77Z1g78w4kEO7kHMVlTRcUry0rfaT8WkfRFzAVrJ07bRDlyNoHa5Up1Zf18gGTyX_YNJgNVnaXTS --username release.manager@bocconi.com.jkdev1 --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
           sfdx force:source:deploy -u release.manager@bocconi.com.jkdev1 --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
+          
+      - name: SETUP PROD
+        if: github.ref == 'refs/heads/main'
+        run: |
+          sfdx force:auth:jwt:grant --clientid 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --username release.manager@bocconi.it --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
+          sfdx force:source:deploy -u release.manager@bocconi.it --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
