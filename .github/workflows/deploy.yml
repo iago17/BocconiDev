@@ -1,31 +1,30 @@
-name: Validazione e Deployment
+name: Validate and Deploy
 
 on:
+  push:
+    branches:
+      - dev1
+      - techmerge
+      - preprod
   pull_request:
-    types: [closed]
+    branches:
+      - dev1
+      - techmerge
+      - preprod
+      - prod
 
 jobs:
-  build-and-deploy:
+  validate-and-deploy:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        branch: [dev1, techmerge, preprod, prod]
-
+        org: [my-dev-org, my-prod-org]
     steps:
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-
-    - name: Setup Node.js
-      uses: actions/setup-node@v1
-      with:
-        node-version: '14'
-
-    - name: Install Dependencies
-      run: npm install
-
-    - name: Validate
-      run: npm run validate
-
-    - name: Deploy
-      if: ${{ matrix.branch != 'prod' }}
-      run: npm run deploy
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Validate code
+        run: sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -c -u ${{ matrix.org }} -w 10 --checkonly
+        if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/prod' }}
+      - name: Deploy code
+        run: sfdx force:source:deploy -x ./manifest/FirstTestDeploy.xml -u ${{ matrix.org }} -w 10
+        if: ${{ github.event_name == 'push' && github.ref != 'refs/heads/prod' }}
