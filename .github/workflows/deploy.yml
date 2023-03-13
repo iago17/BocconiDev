@@ -1,69 +1,32 @@
-name: trigger-validate-deploy
+name: Validazione e Deployment
 
 on:
   pull_request:
     types: [closed]
-  workflow_dispatch:
-    inputs:
-      deployType:
-        description: 'Deploy Type'
-        required: true
-        default: 'validate'
-        type: choice
-        options:
-          - validate
-          - deploy
-      org:
-        description: 'Target Org'
-        required: true
-        default: 'DEV'
-        type: choice
-        options:
-          - DEV
-          - TECHMERGE
-          - PREPROD
-          - PROD
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.head.ref == 'dev1' || github.event.pull_request.head.ref == 'techmerge' || github.event.pull_request.head.ref == 'preprod' || (github.event.pull_request.head.ref == 'prod' && github.event.pull_request.merged == true)
+    strategy:
+      matrix:
+        branch: [dev1, techmerge, preprod, prod]
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: '>=14'
-          check-latest: true
+    - name: Checkout Repository
+      uses: actions/checkout@v2
 
-      - name: Install CLI
-        run: npm install sfdx-cli --global
+    - name: Setup Node.js
+      uses: actions/setup-node@v2.4.2
+      with:
+        node-version: '14'
 
-      - name: SETUP DEV (${{ inputs.org }})
-        if: inputs.org == 'DEV'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_DEV --username $SFDC_DEV_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-      - name: SETUP TECHMERGE (${{ inputs.org }})
-        if: inputs.org == 'TECHMERGE'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_TMERGE --username $SFDC_TMERGE_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-      - name: SETUP PREPROD (${{ inputs.org }})
-        if: inputs.org == 'PREPROD'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PREPROD --username $SFDC_PREPROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-      - name: SETUP PROD (${{ inputs.org }})
-        if: inputs.org == 'PROD'
-        run: |
-          sfdx force:auth:jwt:grant --clientid $CONSUMER_KEY_PROD --username $SFDC_PROD_USER --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
+    - name: Install Dependencies
+      run: npm install
 
-      - name: Running VALIDATE (${{ inputs.deployType }} == 'validate')
-        if: inputs.deployType == 'validate'
-        run: |
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod -x ./manifest/FirstTestDeploy.xml -u ${{ inputs.org }} -w 10
+    - name: Validate
+      if: ${{ matrix.branch != 'prod' }}
+      run: npm run validate
 
-      - name: Running DEPLOY (${{ inputs.deployType }} == 'deploy')
-        if: inputs.deployType == 'deploy'
-        run: |
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod --checkonly --testlevel RunLocalTests -x ./manifest/FirstTestDeploy.xml
-          sfdx force:source:deploy -u release.manager@bocconi.it.jkpreprod -x ./manifest/FirstTestDeploy.xml -u ${{ inputs.org }} -w 10
+    - name: Deploy
+      if: ${{ matrix.branch != 'prod' }}
+      run: npm run deploy
