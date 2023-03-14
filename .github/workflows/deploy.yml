@@ -20,14 +20,25 @@ jobs:
              echo "La branch di partenza è ${{ github.head_ref }}"
              echo "La branch di arrivo è ${{ github.base_ref }}"
        
-      - name: Authentication in ${{ github.base_ref }}
-        if: ${{ github.head_ref == 'dev1' }}
+      - name: Authentication in Tech-Merge
+        if: ${{ github.base_ref == 'tech-merge' }}
         run: |
-         sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_TMERGE}}  --username ${{secrets.SFDC_TMERGE_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-
-      - name: Validate on Salesforce
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_TMERGE}}  --username ${{secrets.SFDC_TMERGE_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+             name: Validate on Salesforce
+             run: |
+                  sfdx force:source:deploy -u ${{secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+      
+      - name: Authentication in PreProd
+        if: ${{ github.base_ref == 'preprod' }}
         run: |
-         sfdx force:source:deploy -u ${{secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_PREPROD}}  --username ${{secrets.SFDC_PREPROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+             name: Validate on Salesforce
+             run: |
+                  sfdx force:source:deploy -u ${{secrets.SFDC_PREPROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+      
+      #- name: Validate on Salesforce
+        #run: |
+        # sfdx force:source:deploy -u ${{secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
 
 #- name: Deploy to Techmerge
  #       run: |
