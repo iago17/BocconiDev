@@ -13,11 +13,11 @@ jobs:
 
     - name: Salesforce Authentication
       run: |
-        sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_DEV}} --username ${{ secrets.SFDC_DEV_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+        sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_PROD}} --username ${{ secrets.SFDC_PROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
 
     - name: Validate on Salesforce
       run: |
-        sfdx force:source:deploy -u ${{ secrets.SFDC_DEV_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+        sfdx force:source:deploy -u ${{ secrets.CONSUMER_KEY_PROD}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
 
     - name: Deploy to Techmerge
       run: |
