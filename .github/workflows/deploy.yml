@@ -8,24 +8,23 @@ jobs:
   validate_and_deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
           node-version: '>=14'
           check-latest: true
 
-    - name: Install CLI
-      run: npm install sfdx-cli --global
+      - name: Install CLI
+        run: npm install sfdx-cli --global
       
-    - name: Salesforce Authentication
-      run: |
-        sfdx force:auth:jwt:grant --clientid 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --username release.manager@bocconi.it --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
+      - name: Salesforce Authentication
+        run: |
+         sfdx force:auth:jwt:grant --clientid 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --username release.manager@bocconi.it --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
 
-    - name: Validate on Salesforce
-      run: |
-        sfdx force:source:deploy -u 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+      - name: Validate on Salesforce
+        run: |
+         sfdx force:source:deploy -u 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
 
-    - name: Deploy to Techmerge
-      run: |
-        sfdx force:source:deploy -u your-org-name -p force-app/main/default -x ./manifest/package.xml
+      - name: Deploy to Techmerge
+        run: |
+         sfdx force:source:deploy -u your-org-name -p force-app/main/default -x ./manifest/package.xml
