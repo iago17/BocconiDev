@@ -36,9 +36,12 @@ jobs:
              run: |
                   sfdx force:source:deploy -u ${{secrets.SFDC_PREPROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
       
-      #- name: Validate on Salesforce
-        #run: |
-        # sfdx force:source:deploy -u ${{secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+      - name: Validate on Salesforce
+        run: |
+              if: ${{ github.base_ref == 'tech-merge' }}
+                  sfdx force:source:deploy -u ${{secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+              if: ${{ github.base_ref == 'PREPROD' }}
+                  sfdx force:source:deploy -u ${{secrets.SFDC_PREPROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
 
 #- name: Deploy to Techmerge
  #       run: |
