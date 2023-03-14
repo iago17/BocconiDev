@@ -1,9 +1,8 @@
 name: Salesforce Validation and Deployment
+
 on:
   pull_request:
-    branches:
-    - dev1
-    types: [closed]
+       types: [closed]
 
 jobs:
   validate_and_deploy:
