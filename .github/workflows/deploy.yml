@@ -17,8 +17,8 @@ jobs:
       - name: Install CLI
         run: |
              npm install sfdx-cli --global
-             echo "La branch di partenza è ${{ github.base_ref }}"
-             echo "La branch di arrivo è ${{ github.head_ref }}"
+             echo "La branch di partenza è ${{ github.head_ref }}"
+             echo "La branch di arrivo è ${{ github.base_ref }}"
        
       - name: Salesforce Authentication
         run: |
