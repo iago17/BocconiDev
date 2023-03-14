@@ -1,17 +1,12 @@
-name: Validate and Deploy
+name: Salesforce Validation and Deployment
 
 on:
-  push:
-    branches:
-      - dev1
-      - techmerge
-      - preprod
-      - prod
+  pull_request:
+       types: [closed]
 
 jobs:
-  build:
+  validate_and_deploy:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -20,33 +15,20 @@ jobs:
           check-latest: true
 
       - name: Install CLI
-        run: npm install sfdx-cli --global
-
-      - name: SETUP DEV
-        if: github.ref == 'refs/heads/dev1'
         run: |
-          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_DEV}} --username ${{ secrets.SFDC_DEV_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-          sfdx force:source:deploy -u ${{ secrets.SFDC_DEV_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml      
-          sfdx force:source:deploy -u ${{ secrets.SFDC_DEV_USER}} -x ./manifest/package.xml -u ${{ inputs.org }} -w 10'
-
-      - name: SETUP TECHMERGE
-        if: github.ref == 'refs/heads/tech-merge'
+             npm install sfdx-cli --global
+             echo "La branch di partenza è ${{ github.head_ref }}"
+             echo "La branch di arrivo è ${{ github.base_ref }}"
+       
+      - name: Authentication in ${{ github.base_ref }}
+        if: ${{ github.head_ref == 'dev1' }}
         run: |
-          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_TMERGE}} --username ${{ secrets.SFDC_TMERGE_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-          sfdx force:source:deploy -u ${{ secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml      
-          sfdx force:source:deploy -u ${{ secrets.SFDC_TMERGE_USER}} -x ./manifest/package.xml -u ${{ inputs.org }} -w 10'
+         sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_TMERGE}}  --username ${{secrets.SFDC_TMERGE_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
 
-      - name: SETUP PREPROD
-        if: github.ref == 'refs/head/preprod'
+      - name: Validate on Salesforce
         run: |
-          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_PREPROD}} --username ${{ secrets.SFDC_PREPROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-          sfdx force:source:deploy -u ${{ secrets.SFDC_PREPROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml      
-          sfdx force:source:deploy -u ${{ secrets.SFDC_PREPROD_USER}} -x ./manifest/package.xml -u ${{ inputs.org }} -w 10'
+         sfdx force:source:deploy -u ${{secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
 
-      - name: SETUP PROD
-        if: github.ref == 'refs/head/main'
-        run: |
-          sfdx force:auth:jwt:grant --clientid ${{ secrets.CONSUMER_KEY_PROD}} --username ${{ secrets.SFDC_PROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
-          sfdx force:source:deploy -u ${{ secrets.SFDC_PROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml      
-      
-      
+#- name: Deploy to Techmerge
+ #       run: |
+  #        sfdx force:source:deploy -u ${{ secrets.SFDC_PROD_USER}} -x ./manifest/package.xml
