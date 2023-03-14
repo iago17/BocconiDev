@@ -1,29 +1,150 @@
 <template>
-    <!--<lightning-card  variant="Narrow"  title="Uploader" icon-name="action:clone">
-        <lightning-file-upload
-        name="fileUploader"
-        accept={acceptedFormats}
-            record-id={myRecordId}
-            onuploadfinished={handleUploadFinished}
-            multiple>
-        </lightning-file-upload>
-    </lightning-card>
+	<lightning-card>
+		<template if:false={openUpload}>
+			<div class="slds-text-align_center">
+				<lightning-button variant="brand-outline" label="Upload Excel" title="Primary action with lighter look" onclick={allowToImport} class="slds-m-left_x-small"></lightning-button>
+				
+			</div>
+		</template>
 
-    <lightning-card title="Carica file Excel" icon-name="standard:file">
-        <div class="slds-m-around_medium">
-            <lightning-input type="file" accept=".xlsx, .xls" label="Carica file" onchange={handleUpload}></lightning-input>
-            <template if:true={data}>
-                <lightning-datatable data={data} columns={columns} key-field="id"></lightning-datatable>
-            </template>
-        </div>
-    </lightning-card>-->
+		<template if:true={openUpload}>
+			<lightning-card title="Choose an Object">
+				<div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
+					<div class="slds-grid slds-wrap">
+						<div style="padding-bottom: 16px;" class="slds-size_1-of-2 slds-p-horizontal_medium">
+							<lightning-combobox data-id="object" value={selectedObject} options={listObj} placeholder="Select an Object" required onchange={handleChange}></lightning-combobox>
+						</div>
+						<!--<div style="padding-bottom: 16px;" class="slds-size_1-of-2 slds-p-horizontal_medium">
+							<lightning-combobox data-id="operation" value={selectedOperation} options={operations} placeholder="Select an Operation" required onchange={handleChange}></lightning-combobox>
+						</div>-->
+					</div>
+				</div>
+			</lightning-card>
 
-    <lightning-layout-item size='12' small-device-size='12' large-device-size='3' medium-device-size='4' padding='around-small'>
+			<template if:true={showUpload}>
+				<div class="slds-text-align_center">
+					<lightning-layout-item size='12' small-device-size='12' large-device-size='3' medium-device-size='4' padding='around-small'>
+						<lightning-input type='file' name='fileUploader' accept={strAcceptedFormats} onchange={handleUploadFinished}></lightning-input>
+						<p>{strUploadFileName}</p>
+					</lightning-layout-item>
+				</div>
+			</template>
+			
+			<template if:true={openTab}>
+				<section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+					<div class="slds-modal__container">
+						<!-- modal header start -->
+						<header class="slds-modal__header">
+							<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+								<lightning-icon icon-name="utility:close"
+									alternative-text="close"
+									variant="inverse"
+									size="small" ></lightning-icon>
+								<span class="slds-assistive-text">Close</span>
+							</button>
+							<h2 class="slds-text-heading_medium slds-hyphenate">Choose Fields</h2>
+						</header>
+						
+						<!-- modal body start -->
+						<div class="slds-modal__content slds-p-around_medium">
+							<template for:each={mappingFields} for:item="mapping">
+								<div key={mapping} style="margin-left:2px; margin-right:2px; font-size:11px;" class="slds-grid">
+									<div style="margin-right:4px;" class="slds-col slds-size_1-of-2">
+										<lightning-input style="border:0px; margin-bottom: 10px; background:white " class="slds-box slds-box_x-small -m-top_small" disabled value={mapping.label}></lightning-input>
+										<!--<div style="margin-bottom: 10px;" class="slds-box slds-box_x-small -m-top_small">{mapping.label}</div>-->
+									</div>
+									<div data-key={mapping.value} style="margin-left:4px;" class="slds-col slds-size_1-of-2">
+										<lightning-input  style="border:0px; margin-bottom: 10px;" class="slds-box slds-box_x-small -m-top_small" name="enter-search" type="search" value={mapping.value} onchange={handleInputChange}></lightning-input>
+									</div>
+								</div>
+							</template>		
+							
+							<lightning-button label="Salva" onclick={handleSave}></lightning-button>
+							<template if:true={matchingFields.length}>
+								<lightning-card title="Recommended fields">
+									<template for:each={matchingFieldsList} for:item='item'>
+										<option key={item.value} value={item.value}>{item.value}</option>
+									</template>
+									<!--<template for:each={matchingFieldsList} for:item="field">-->
+										<!--<c-jk-selectcombobox key={fields} matching-fields={matchingFields}></c-jk-selectcombobox>-->
+										<!--<lightning-combobox key={field} data-id="searchedField" options={matchingFields}></lightning-combobox>-->
+										<!--<li key={field}>{field}</li>
+									</template>-->
+									<lightning-combobox onchange={handleInputChange} placeholder="-Select-" options={matchingFieldsList}></lightning-combobox>
+									
+								</lightning-card>
+							</template>
+							<!--<div class="slds-m-around_medium">
+								<lightning-input label="Account Field Search"
+												value={searchTerm}
+												onchange={handleInputChange}>
+								</lightning-input>
+								<ul if:true={matchingFields.length}>
+									<lightning-combobox data-id="searchedField" value={selectedField} options={matchingFieldsList}></lightning-combobox>
+									<template for:each={matchingFields} for:item="field">
+										<li key={field}>{field}</li>
+									</template>
+								</ul>
+								<p if:false={matchingFields.length}>
+									No matching fields found.
+								</p>
+							</div>-->
+						</div>
+						<!--<lightning-card title="Search Field to Map">
+							<div class="slds-m-around_medium">
+								<lightning-input label="Account Field Search"
+												value={searchTerm}
+												onchange={handleInputChange}>
+								</lightning-input>
+								<ul if:true={matchingFields.length}>
+									<template for:each={matchingFields} for:item="field">
+										<li key={field}>{field}</li>
+									</template>
+								</ul>
+								<p if:false={matchingFields.length}>
+									No matching fields found.
+								</p>
+							</div>
+						</lightning-card>-->
+			
+						<!-- modal footer start-->
+						<footer class="slds-modal__footer">
+							<button class="slds-button slds-button_neutral" onclick={closeUpload}>Close</button>
+						</footer>
+					</div>
+				</section>
+				<div class="slds-backdrop slds-backdrop_open"></div>
+			</template>
+			 <!-- modal end -->
+			 
+			<!--<lightning-card title="Account Field Lookup">
+					<div class="slds-m-around_medium">
+						<lightning-input label="Account Field Search"
+										value={searchTerm}
+										onchange={handleInputChange}>
+						</lightning-input>
+						<ul if:true={matchingFields.length}>
+							<lightning-combobox data-id="searchedField" value={selectedField} options={matchingFields}></lightning-combobox>
+							<template for:each={matchingFields} for:item="field">
+								<li key={field}>{field}</li>
+							</template>
+						</ul>
+						<p if:false={matchingFields.length}>
+							No matching fields found.
+						</p>
+				</div>
+			</lightning-card>-->
 
-        <lightning-input type='file' label='Upload XLSX' name='fileUploader' accept={strAcceptedFormats} onchange={handleUploadFinished}></lightning-input>
+			<lightning-modal-footer>
+				<lightning-button class="slds-button" variant="neutral" label="Close" onclick={closeUpload}></lightning-button>                
+			</lightning-modal-footer>
 
-        <p>{strUploadFileName}</p>
-
-    </lightning-layout-item>
+		</template>
+		
+		<template if:true={spinner}>
+			<lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+		</template>
+		
+	</lightning-card>
 
 </template>
