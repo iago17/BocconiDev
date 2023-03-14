@@ -27,4 +27,4 @@ jobs:
 
       - name: Deploy to Techmerge
         run: |
-          sfdx force:source:deploy -u ${{ secrets.SFDC_PROD_USER}} -x ./manifest/package.xml -u ${{ inputs.org }} -w 10'
+          sfdx force:source:deploy -u ${{ secrets.SFDC_PROD_USER}} -x ./manifest/package.xml -w 10'
