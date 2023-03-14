@@ -1,6 +1,6 @@
 public class JK_UserTriggerHandler implements JK_TriggerHandler
 {
-    public Boolean isDisabled() 
+    public Boolean isDisabled()  
     {
 		Trigger__c dflt = Trigger__c.getOrgDefaults();
 		Trigger__c prfl = Trigger__c.getInstance(Userinfo.getProfileId()); 
