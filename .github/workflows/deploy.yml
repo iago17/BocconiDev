@@ -44,5 +44,5 @@ jobs:
       - name: Authentication in Prod
         if: ${{ github.base_ref == 'main' }}
         run: |
-             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_PROD}}  --username ${{secrets.SFDC_PROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.lightning.force.com
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_PROD}}  --username ${{secrets.SFDC_PROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
              sfdx force:source:deploy -u ${{secrets.SFDC_PROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
