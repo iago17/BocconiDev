@@ -44,5 +44,5 @@ jobs:
       - name: Authentication in Prod
         if: ${{ github.base_ref == 'main' }}
         run: |
-             sfdx force:auth:jwt:grant --clientid 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s  --username ettore.zannella@unibocconi.it --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl ${{secrets.SFDC_PROD_URL}}
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_PROD}}  --username ${{secrets.SFDC_PROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl ${{secrets.SFDC_PROD_URL}}
              sfdx force:source:deploy -u ${{secrets.SFDC_PROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
