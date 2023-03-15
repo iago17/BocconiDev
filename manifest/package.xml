@@ -33,7 +33,7 @@
         <name>StaticResource</name>
     </types>-->
     <types>
-        <members>Account.Test__c</members>
+        <members>Account.Name</members>
         <name>CustomField</name>
     </types>
     <version>56.0</version>
