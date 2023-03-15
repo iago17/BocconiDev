@@ -33,7 +33,7 @@
         <name>StaticResource</name>
     </types>-->
     <types>
-        <members>Contact.FirstName</members>
+        <members>Contact.Birthdate</members>
         <name>CustomField</name>
     </types>
     <version>56.0</version>
