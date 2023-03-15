@@ -5,7 +5,7 @@ on:
        types: [closed]
 
 jobs:
-  validate_and_deploy:
+  Authentication:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -17,17 +17,32 @@ jobs:
       - name: Install CLI
         run: |
              npm install sfdx-cli --global
-             echo "La branch di partenza è ${{ github.base_ref }}"
-             echo "La branch di arrivo è ${{ github.head_ref }}"
+             echo "La branch di partenza è ${{ github.head_ref }}"
+             echo "La branch di arrivo è ${{ github.base_ref }}"
        
-      - name: Salesforce Authentication
+      - name: Dev
+        if: ${{ github.base_ref == 'dev1' }}
         run: |
-         sfdx force:auth:jwt:grant --clientid 3MVG9vvlaB0y1YsKvnfO79m8BKG1uasHEXSdzxAZyyi7Ly1sgf1ZFDCV_ascgbirCiL5GsTd3ZPkj2Dsk8e.s --username release.manager@bocconi.it --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.my.salesforce.com
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_DEV}}  --username ${{secrets.SFDC_DEV_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+             sfdx force:source:deploy -u ${{secrets.SFDC_DEV_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+             sfdx force:source:deploy -u ${{ secrets.SFDC_DEV_USER}} -x ./manifest/package.xml
 
-      - name: Validate on Salesforce
+      - name: Authentication in Tech-Merge
+        if: ${{ github.base_ref == 'tech-merge' }}
         run: |
-         sfdx force:source:deploy -u ${{ secrets.SFDC_PROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
-
-#- name: Deploy to Techmerge
- #       run: |
-  #        sfdx force:source:deploy -u ${{ secrets.SFDC_PROD_USER}} -x ./manifest/package.xml
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_TMERGE}}  --username ${{secrets.SFDC_TMERGE_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+             sfdx force:source:deploy -u ${{secrets.SFDC_TMERGE_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+             sfdx force:source:deploy -u ${{ secrets.SFDC_TMERGE_USER}} -x ./manifest/package.xml
+             
+      - name: Authentication in PreProd
+        if: ${{ github.base_ref == 'preprod' }}
+        run: |
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_PREPROD}}  --username ${{secrets.SFDC_PREPROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://test.salesforce.com
+             sfdx force:source:deploy -u ${{secrets.SFDC_PREPROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
+             sfdx force:source:deploy -u ${{ secrets.SFDC_PREPROD_USER}} -x ./manifest/package.xml
+             
+      - name: Authentication in Prod
+        if: ${{ github.base_ref == 'main' }}
+        run: |
+             sfdx force:auth:jwt:grant --clientid ${{secrets.CONSUMER_KEY_PROD}}  --username ${{secrets.SFDC_PROD_USER}} --jwtkeyfile keys/server.key --setdefaultdevhubusername --setalias sfdx-ci --instanceurl https://bocconidemo.lightning.force.com
+             sfdx force:source:deploy -u ${{secrets.SFDC_PROD_USER}} --checkonly --testlevel RunLocalTests -x ./manifest/package.xml
