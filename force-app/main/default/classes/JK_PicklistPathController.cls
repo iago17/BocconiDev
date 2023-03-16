@@ -1,5 +1,5 @@
-public with sharing class JK_PicklistPathController 
-{
+public with sharing class JK_PicklistPathController {}
+/*{
     @AuraEnabled
     public static Map<String, List<SObject>> retrieveCurrentStatus(Id recordId, List<String> fieldList)
     {
@@ -76,4 +76,4 @@ public with sharing class JK_PicklistPathController
             throw new AuraHandledException(e.getMessage());
         }
     }
-}
+}*/
