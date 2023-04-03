@@ -1,6 +1,8 @@
 <template>
 	<lightning-card>
 		<template if:false={openUpload}>
+			<strong><h1 style="text-align: center;">Caricamento massivo degli oggetti</h1></strong>
+			</br>
 			<div class="slds-text-align_center">
 				<lightning-button variant="brand-outline" label="Upload Excel" title="Primary action with lighter look" onclick={allowToImport} class="slds-m-left_x-small"></lightning-button>
 				
@@ -8,15 +10,19 @@
 		</template>
 
 		<template if:true={openUpload}>
+			
+			<!--Choose Obj-->
 			<lightning-card title="Choose an Object">
 				<div class="slds-box slds-p-around_none slds-m-top_x-small slds-m-bottom_medium slds-m-horizontal_none">
 					<div class="slds-grid slds-wrap">
 						<div style="padding-bottom: 16px;" class="slds-size_1-of-2 slds-p-horizontal_medium">
 							<lightning-combobox data-id="object" value={selectedObject} options={listObj} placeholder="Select an Object" required onchange={handleChange}></lightning-combobox>
 						</div>
-						<!--<div style="padding-bottom: 16px;" class="slds-size_1-of-2 slds-p-horizontal_medium">
-							<lightning-combobox data-id="operation" value={selectedOperation} options={operations} placeholder="Select an Operation" required onchange={handleChange}></lightning-combobox>
-						</div>-->
+						<template if:true={showRT}>
+							<div style="padding-bottom: 16px;" class="slds-size_1-of-2 slds-p-horizontal_medium">
+								<lightning-combobox data-id="recordType" value={selectedRT} options={listRT} placeholder="Select a Record Type" required onchange={handleChange}></lightning-combobox>
+							</div>							
+						</template>
 					</div>
 				</div>
 			</lightning-card>
@@ -35,7 +41,7 @@
 					<div class="slds-modal__container">
 						<!-- modal header start -->
 						<header class="slds-modal__header">
-							<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+							<button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeUpload}>
 								<lightning-icon icon-name="utility:close"
 									alternative-text="close"
 									variant="inverse"
@@ -53,27 +59,32 @@
 										<lightning-input style="border:0px; margin-bottom: 10px; background:white " class="slds-box slds-box_x-small -m-top_small" disabled value={mapping.label}></lightning-input>
 										<!--<div style="margin-bottom: 10px;" class="slds-box slds-box_x-small -m-top_small">{mapping.label}</div>-->
 									</div>
-									<div data-key={mapping.value} style="margin-left:4px;" class="slds-col slds-size_1-of-2">
-										<lightning-input  style="border:0px; margin-bottom: 10px;" class="slds-box slds-box_x-small -m-top_small" name="enter-search" type="search" value={mapping.value} onchange={handleInputChange}></lightning-input>
+									<div style="margin-left:4px;" class="slds-col slds-size_1-of-2">
+										<!--<lightning-input  style="border:0px; margin-bottom: 10px;" class="slds-box slds-box_x-small -m-top_small" name="enter-search" type="search" value={mapping.value} onchange={handleInputChange}></lightning-input>-->
+										<c-autocomplete-datalist mapping-label={mapping.label} options={mapping.value} object-info={objectInfo} onselectedvalue={handleValueSelectedChange}></c-autocomplete-datalist>
 									</div>
+
 								</div>
 							</template>		
 							
-							<lightning-button label="Salva" onclick={handleSave}></lightning-button>
+							<lightning-button label="Salva" onclick={saveRecords}></lightning-button>
+							<!--
 							<template if:true={matchingFields.length}>
 								<lightning-card title="Recommended fields">
 									<template for:each={matchingFieldsList} for:item='item'>
 										<option key={item.value} value={item.value}>{item.value}</option>
-									</template>
+									</template>-->
 									<!--<template for:each={matchingFieldsList} for:item="field">-->
 										<!--<c-jk-selectcombobox key={fields} matching-fields={matchingFields}></c-jk-selectcombobox>-->
 										<!--<lightning-combobox key={field} data-id="searchedField" options={matchingFields}></lightning-combobox>-->
 										<!--<li key={field}>{field}</li>
 									</template>-->
-									<lightning-combobox onchange={handleInputChange} placeholder="-Select-" options={matchingFieldsList}></lightning-combobox>
+									<!--<lightning-combobox onchange={handleInputChange} placeholder="-Select-" options={matchingFieldsList}></lightning-combobox>
 									
 								</lightning-card>
-							</template>
+							</template>-->
+
+							
 							<!--<div class="slds-m-around_medium">
 								<lightning-input label="Account Field Search"
 												value={searchTerm}

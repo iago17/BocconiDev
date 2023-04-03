@@ -1,3 +1,36 @@
 <template>
-    <lightning-combobox onchange={handleInputChange} name={field} placeholder="-Select-" options={matchingFieldsList} value={field}></lightning-combobox>
+    <div class="slds-form-element">
+        <div class="slds-form-element__control">
+            <div class="slds-combobox_container">
+                <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open" aria-expanded="true"
+                    aria-haspopup="listbox" role="combobox">
+                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                        <!--<lightning-input label="input text" type="search" onchange={handleChange2} value={selectedValue}-->
+                        <!--<lightning-input label="input text" type="search" onchange={handleChange2} value={mapping.value} style="border:0px; margin-bottom: 10px;" class="slds-box slds-box_x-small -m-top_small" name="enter-search" variant="label-hidden"></lightning-input>-->
+                        <lightning-input label="input text" type="search" style="border:0px; margin-bottom: 10px;" class="slds-box slds-box_x-small -m-top_small" name="enter-search" variant="label-hidden"></lightning-input>
+                    </div>
+                    
+                    <!--<template if:true={showDataList}>
+                        <div class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid" role="listbox">
+                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                <template for:each={stringList} for:item="value">
+                                    <li key={value} role="presentation" class="slds-listbox__item">
+                                        <div data-recid={value} onclick={handleSelection}
+                                            class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                            <span class="slds-media__figure slds-listbox__option-icon"></span>
+                                            <span class="slds-media__body">
+                                                <span class="slds-truncate" title={value}>
+                                                {value}
+                                                </span>
+                                            </span>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </template>-->
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
